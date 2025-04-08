@@ -17,14 +17,12 @@
   <ItemGroup>
     <PackageReference Include="BepInEx.AssemblyPublicizer.MSBuild" Version="0.4.2" PrivateAssets="all" />
     <Reference Include="$(HasteDir)\Haste_Data\Managed\*.dll" Private="false" Publicize="true" />
-    <!-- Using Day's HarmonyX here because I literally cannot test my stuff without UnityExplorer.-->
     <Reference Include="C:\Program Files (x86)\Steam\steamapps\workshop\content\1796470\3408901301\*.dll" Private="false" />
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="TiedBones">
-      <HintPath>..\TiedBones\bin\Debug\netstandard2.1\TiedBones.dll</HintPath>
+    <Reference Include="BoneProjectionLib">
+      <HintPath>..\BoneProjectionLib\bin\Debug\netstandard2.1\BoneProjectionLib.dll</HintPath>
     </Reference>
   </ItemGroup>
-
 </Project>

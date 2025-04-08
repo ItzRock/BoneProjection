@@ -1,5 +1,6 @@
-﻿using UnityEngine;
-namespace TiedBones {
+﻿using System.Windows.Forms;
+using UnityEngine;
+namespace BoneProjectionLib {
     [System.Serializable]
     public class CharacterBoneReference {
         public Transform head;
@@ -36,13 +37,91 @@ namespace TiedBones {
         }
     }
 
-    public class TiedBones : MonoBehaviour {
+    public class BoneProjector : MonoBehaviour {
         public CharacterBoneReference source;
         public CharacterBoneReference target;
+
+        public float armsHeight = 0;
+        private float armsDistance = 0f;
 
         private Transform[] sourceBones;
         private Transform[] targetBones;
         private bool ready = false;
+        public void SourceZoe(Transform zoeModel) {
+            CharacterBoneReference sourceBones = new CharacterBoneReference();
+            Transform root2 = zoeModel.Find("Visual/Courier_Retake/Courier/Armature/Hip");
+            root2.gameObject.SetActive(false);
+            // Spine & head
+            sourceBones.spine1 = root2.Find("Spine_1");
+            sourceBones.spine2 = root2.Find("Spine_1/Spine_2");
+            sourceBones.spine3 = root2.Find("Spine_1/Spine_2/Spine_3");
+            sourceBones.neck = root2.Find("Spine_1/Spine_2/Spine_3/Neck");
+            sourceBones.head = root2.Find("Spine_1/Spine_2/Spine_3/Neck/Head");
+            sourceBones.head_top = root2.Find("Spine_1/Spine_2/Spine_3/Neck/Head/Top");
+
+            // Hips base
+            sourceBones.hips = root2;
+
+            // Left Leg
+            sourceBones.upLegL = root2.Find("Hip_L/Leg_L");
+            sourceBones.lowerLegL = root2.Find("Hip_L/Leg_L/Knee_L");
+            sourceBones.footL = root2.Find("Hip_L/Leg_L/Knee_L/Foot_L");
+
+            // Right Leg
+            sourceBones.upLegR = root2.Find("Hip_R/Leg_R");
+            sourceBones.lowerLegR = root2.Find("Hip_R/Leg_R/Knee_R");
+            sourceBones.footR = root2.Find("Hip_R/Leg_R/Knee_R/Foot_R");
+
+            // Left Arm
+            sourceBones.upperArmL = root2.Find("Spine_1/Spine_2/Spine_3/Shoulder_L/Arm_L");
+            sourceBones.armL = root2.Find("Spine_1/Spine_2/Spine_3/Shoulder_L/Arm_L/Elbow_L");
+            sourceBones.handL = root2.Find("Spine_1/Spine_2/Spine_3/Shoulder_L/Arm_L/Elbow_L/Hand_L");
+            sourceBones.shoulderL = root2.Find("Spine_1/Spine_2/Spine_3/Shoulder_L");
+            // Right Arm
+            sourceBones.upperArmR = root2.Find("Spine_1/Spine_2/Spine_3/Shoulder_R/Arm_R");
+            sourceBones.armR = root2.Find("Spine_1/Spine_2/Spine_3/Shoulder_R/Arm_R/Elbow_R");
+            sourceBones.handR = root2.Find("Spine_1/Spine_2/Spine_3/Shoulder_R/Arm_R/Elbow_R/Hand_R");
+            sourceBones.shoulderR = root2.Find("Spine_1/Spine_2/Spine_3/Shoulder_R");
+
+            source = sourceBones;
+        }
+        public void TargetMixamo(Transform rig) {
+            CharacterBoneReference targetBones = new CharacterBoneReference();
+            Transform root1 = rig.Find("mixamorig:Hips");
+
+            // Spine & Head
+            targetBones.hips = root1;
+            targetBones.spine1 = root1.Find("mixamorig:Spine");
+            targetBones.spine2 = root1.Find("mixamorig:Spine/mixamorig:Spine1");
+            targetBones.spine3 = root1.Find("mixamorig:Spine/mixamorig:Spine1/mixamorig:Spine2");
+            targetBones.neck = root1.Find("mixamorig:Spine/mixamorig:Spine1/mixamorig:Spine2/mixamorig:Neck");
+            targetBones.head = root1.Find("mixamorig:Spine/mixamorig:Spine1/mixamorig:Spine2/mixamorig:Neck/mixamorig:Head");
+            targetBones.head_top = root1.Find("mixamorig:Spine/mixamorig:Spine1/mixamorig:Spine2/mixamorig:Neck/mixamorig:Head/mixamorig:HeadTop_End");
+
+            // Left Leg
+            targetBones.upLegL = root1.Find("mixamorig:LeftUpLeg");
+            targetBones.lowerLegL = root1.Find("mixamorig:LeftUpLeg/mixamorig:LeftLeg");
+            targetBones.footL = root1.Find("mixamorig:LeftUpLeg/mixamorig:LeftLeg/mixamorig:LeftFoot");
+
+            // Right Leg
+            targetBones.upLegR = root1.Find("mixamorig:RightUpLeg");
+            targetBones.lowerLegR = root1.Find("mixamorig:RightUpLeg/mixamorig:RightLeg");
+            targetBones.footR = root1.Find("mixamorig:RightUpLeg/mixamorig:RightLeg/mixamorig:RightFoot");
+
+            // Left Arm
+            targetBones.shoulderL = root1.Find("mixamorig:Spine/mixamorig:Spine1/mixamorig:Spine2/mixamorig:LeftShoulder");
+            targetBones.upperArmL = targetBones.shoulderL.Find("mixamorig:LeftArm");
+            targetBones.armL = targetBones.upperArmL.Find("mixamorig:LeftForeArm");
+            targetBones.handL = targetBones.armL.Find("mixamorig:LeftHand");
+
+            // Right Arm
+            targetBones.shoulderR = root1.Find("mixamorig:Spine/mixamorig:Spine1/mixamorig:Spine2/mixamorig:RightShoulder");
+            targetBones.upperArmR = targetBones.shoulderR.Find("mixamorig:RightArm");
+            targetBones.armR = targetBones.upperArmR.Find("mixamorig:RightForeArm");
+            targetBones.handR = targetBones.armR.Find("mixamorig:RightHand");
+
+            target = targetBones;
+        }
         public void Setup() {
             sourceBones = source.GetBoneArray();
             targetBones = target.GetBoneArray();
@@ -54,6 +133,8 @@ namespace TiedBones {
             for (int i = 0; i < targetBones.Length; i++) {
                 if (sourceBones[i] != null && targetBones[i] != null) {
                     targetBones[i].position = sourceBones[i].position;
+                    if (i == 13 || i == 14) targetBones[i].position = new Vector3(sourceBones[i].position.x, sourceBones[i].position.y + armsHeight, sourceBones[i].position.z);
+                    // add arm distance 
                     targetBones[i].localScale = sourceBones[i].localScale;
                     targetBones[i].rotation = sourceBones[i].rotation;
                 }
