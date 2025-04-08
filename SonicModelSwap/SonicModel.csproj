@@ -10,8 +10,6 @@
     <DisableImplicitFrameworkReferences>true</DisableImplicitFrameworkReferences>
     <!-- Do not generate .deps.json file (it is not needed) -->
     <GenerateDependencyFile>false</GenerateDependencyFile>
-    <!-- Do not generate .pdb (debugging symbols) - you could ship this with your mod if you want, up to you -->
-    <DebugType>none</DebugType>
   </PropertyGroup>
 
   <ItemGroup>

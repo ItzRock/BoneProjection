@@ -4,11 +4,11 @@ using BoneProjectionLib;
 
 namespace SonicModel;
 // bound to this because it will always be on the player when they spawn.
-[HarmonyPatch(typeof(PlayerCharacter))]
+[HarmonyPatch(typeof(PlayerAnimationHandler))]
 public class PlayerPatches {
-    [HarmonyPatch(nameof(PlayerCharacter.Awake))]
+    [HarmonyPatch(nameof(PlayerAnimationHandler.Awake))]
     [HarmonyPostfix]
-    private static void AwakePostFix(PlayerCharacter __instance) {
+    private static void AwakePostFix(PlayerAnimationHandler __instance) {
         if (!BoneProjectionModelSwap.Enabled) return;
         // Setup Clone
         GameObject clone = GameObject.Instantiate(BoneProjectionModelSwap.prefab);
@@ -23,11 +23,10 @@ public class PlayerPatches {
         zoeModel.transform.localScale = Vector3.one * BoneProjectionModelSwap.zoeScale;
 
         // Do the Projection
-        BoneProjector boneProjector = clone.GetComponent<BoneProjector>();
+        BoneProjector boneProjector = clone.AddComponent<BoneProjector>();
         boneProjector.armsHeight = BoneProjectionModelSwap.armHeight;
         boneProjector.TargetMixamo(clone.transform.Find("Sonic"));
-        boneProjector.SourceZoe(zoeModel.transform);
-        boneProjector.source.hips.gameObject.SetActive(false); // To hide her bags and stuff, Everything still works.
+        boneProjector.SourceZoe(__instance.transform);
         boneProjector.Setup();
         BoneProjectionModelSwap.currentProjector = boneProjector;
         BoneProjectionModelSwap.curZoe = zoeModel;
