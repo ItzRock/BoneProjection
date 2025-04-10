@@ -25,6 +25,7 @@ public class PlayerPatches {
         // Do the Projection
         BoneProjector boneProjector = clone.AddComponent<BoneProjector>();
         boneProjector.armsHeight = BoneProjectionModelSwap.armHeight;
+        boneProjector.armsDistance = BoneProjectionModelSwap.armDistance;
         boneProjector.TargetMixamo(clone.transform.Find("Griffin"));
         boneProjector.SourceZoe(__instance.transform);
         boneProjector.source.shoulderL = null; // Shoulders don't look too pretty on peter so we'll remove them

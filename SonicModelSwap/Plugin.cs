@@ -19,6 +19,8 @@ public class BoneProjectionModelSwap {
     public static float modelScale = 1f;
     public static float zoeScale = 1.2f;
     public static float armHeight = 0f;
+    public static float armDistance = 0f;
+
     public static string AssemblyDirectory {
         get {
             string codeBase = Assembly.GetExecutingAssembly().CodeBase;

@@ -42,7 +42,7 @@ namespace BoneProjectionLib {
         public CharacterBoneReference target;
 
         public float armsHeight = 0;
-        private float armsDistance = 0f;
+        public float armsDistance = 0f;
 
         private Transform[] sourceBones;
         private Transform[] targetBones;
@@ -133,8 +133,11 @@ namespace BoneProjectionLib {
             for (int i = 0; i < targetBones.Length; i++) {
                 if (sourceBones[i] != null && targetBones[i] != null) {
                     targetBones[i].position = sourceBones[i].position;
+                    // I'm sure theres a better way to do this
                     if (i == 13 || i == 14) targetBones[i].position = new Vector3(sourceBones[i].position.x, sourceBones[i].position.y + armsHeight, sourceBones[i].position.z);
-                    // add arm distance 
+                    if (i == 15 || i == 17 || i == 19) targetBones[i].position = (targetBones[6].right * armsDistance) + targetBones[i].position;
+                    if (i == 16 | i == 18 || i == 20) targetBones[i].position = (-targetBones[6].right * armsDistance) + targetBones[i].position;
+
                     targetBones[i].localScale = sourceBones[i].localScale;
                     targetBones[i].rotation = sourceBones[i].rotation;
                 }

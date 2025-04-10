@@ -25,6 +25,7 @@ public class PlayerPatches {
         // Do the Projection
         BoneProjector boneProjector = clone.AddComponent<BoneProjector>();
         boneProjector.armsHeight = BoneProjectionModelSwap.armHeight;
+        boneProjector.armsDistance = BoneProjectionModelSwap.armDistance;
         boneProjector.TargetMixamo(clone.transform.Find("Sonic"));
         boneProjector.SourceZoe(__instance.transform);
         boneProjector.Setup();
