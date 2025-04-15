@@ -1,5 +1,4 @@
-﻿using System.Windows.Forms;
-using UnityEngine;
+﻿using UnityEngine;
 namespace BoneProjectionLib {
     [System.Serializable]
     public class CharacterBoneReference {
