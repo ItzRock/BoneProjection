@@ -6,10 +6,9 @@ namespace FailboatModel;
 // bound to this because it will always be on the player when they spawn.
 [HarmonyPatch(typeof(PlayerSkinSetter))]
 public class PlayerPatches {
-    [HarmonyPatch(nameof(PlayerSkinSetter.Awake))]
+    [HarmonyPatch(nameof(PlayerSkinSetter.FinishSkinSwap))]
     [HarmonyPostfix]
-    private static void AwakePostFix(PlayerSkinSetter __instance) {
-        Debug.Log("LOADING PLAYER MODEL");
+    private static void FinishSkinSwap(PlayerSkinSetter __instance) {
         if (!BoneProjectionModelSwap.Enabled) return;
         // Setup Clone
         GameObject clone = GameObject.Instantiate(BoneProjectionModelSwap.prefab);
@@ -20,7 +19,7 @@ public class PlayerPatches {
 
         // Setup Zoe Model
         GameObject zoeModel = __instance.gameObject;
-       // zoeModel.transform.Find("Courier/Armature").gameObject.SetActive(false);
+        zoeModel.transform.Find("Courier/Armature").gameObject.SetActive(false);
         zoeModel.transform.localScale = Vector3.one * BoneProjectionModelSwap.zoeScale;
 
         // Do the Projection
@@ -63,7 +62,7 @@ public class PlayerPatches {
 
 
         boneProjector.target = bones;
-        boneProjector.SourceZoe(__instance.transform.Find("Courier/Armature/Hip"));
+        boneProjector.SourceZoe(__instance.currentHip.transform);
         boneProjector.Setup();
         BoneProjectionModelSwap.currentProjector = boneProjector;
         BoneProjectionModelSwap.curZoe = zoeModel;
