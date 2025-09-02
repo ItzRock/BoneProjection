@@ -49,10 +49,10 @@ namespace BoneProjectionLib {
         public bool doScale = true;
         public bool doPosition = true;
 
-        public void SourceZoe(Transform zoeModel) {
+        public void SourceZoe(Transform ZoeHip) {
+            Debug.Log($"IS HIP NULL? {ZoeHip == null}");
             CharacterBoneReference sourceBones = new CharacterBoneReference();
-            Transform root2 = zoeModel.Find("Visual/Courier_Retake/Courier/Armature/Hip");
-            root2.gameObject.SetActive(false);
+            Transform root2 = ZoeHip;
             // Spine & head
             sourceBones.spine1 = root2.Find("Spine_1");
             sourceBones.spine2 = root2.Find("Spine_1/Spine_2");
@@ -134,14 +134,14 @@ namespace BoneProjectionLib {
             if (!ready) return;
             for (int i = 0; i < targetBones.Length; i++) {
                 if (sourceBones[i] != null && targetBones[i] != null) {
-                    if(doPosition) targetBones[i].position = sourceBones[i].position;
+                    if (doPosition) targetBones[i].position = sourceBones[i].position;
                     // I'm sure theres a better way to do this
                     if (i == 13 || i == 14) targetBones[i].position = new Vector3(sourceBones[i].position.x, sourceBones[i].position.y + armsHeight, sourceBones[i].position.z);
                     if (i == 15 || i == 17 || i == 19) targetBones[i].position = (targetBones[6].right * armsDistance) + targetBones[i].position;
                     if (i == 16 | i == 18 || i == 20) targetBones[i].position = (-targetBones[6].right * armsDistance) + targetBones[i].position;
 
-                    if(doScale) targetBones[i].localScale = sourceBones[i].localScale;
-                    if(doRotation) targetBones[i].rotation = sourceBones[i].rotation;
+                    if (doScale) targetBones[i].localScale = sourceBones[i].localScale;
+                    if (doRotation) targetBones[i].rotation = sourceBones[i].rotation;
                 }
             }
         }

@@ -11,9 +11,16 @@
     <!-- Do not generate .deps.json file (it is not needed) -->
     <GenerateDependencyFile>false</GenerateDependencyFile>
   </PropertyGroup>
-  <!-- I swear there was some nuget package for unity modules but idk where it is -->
+
   <ItemGroup>
+    <PackageReference Include="BepInEx.AssemblyPublicizer.MSBuild" Version="0.4.2" PrivateAssets="all" />
     <Reference Include="$(HasteDir)\Haste_Data\Managed\*.dll" Private="false" Publicize="true" />
+    <Reference Include="C:\Program Files (x86)\Steam\steamapps\workshop\content\1796470\3408901301\*.dll" Private="false" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="BoneProjectionLib">
+      <HintPath>..\BoneProjectionLib\bin\Debug\netstandard2.1\BoneProjectionLib.dll</HintPath>
+    </Reference>
+  </ItemGroup>
 </Project>
